@@ -1,9 +1,14 @@
 <script setup>
 import Header from '../components/Header.vue';
+import Footer from '../components/Footer.vue';
+import { useStore } from '../store';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 </script>
 
 <template>
   <Header />
+  
   <div class="overlay">
     <div class="form-container">
       <h2>Create an Account</h2>
