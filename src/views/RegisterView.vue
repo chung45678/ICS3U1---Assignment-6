@@ -4,111 +4,94 @@ import Footer from '../components/Footer.vue';
 import { useStore } from '../store';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const username = ref("");
+const password = ref("");
+const confPassword = ref("");
+const store = useStore();
+const router = useRouter();
+
+const handleRegister = () => {
+  if (confPassword.value !== password.value) {
+    alert("Your passwords do not match!")
+  } else {
+    store.email = email.value
+    store.password = password.value
+    store.firstName = firstName.value
+    store.lastName = lastName.value
+    store.password = password.value
+    router.push("/movies");
+  }
+};
 </script>
 
 <template>
   <Header />
-  
-  <div class="overlay">
-    <div class="form-container">
-      <h2>Create an Account</h2>
-      <form>
-        <input type="text" placeholder="Name" class="input-field" required>
-        <input type="email" placeholder="Email" class="input-field" required>
-        <input type="password" placeholder="Password" class="input-field" required>
-        <button type="submit" class="button register">Register</button>
-      </form>
-    </div>
-  </div>
+  <hero>
+    <form class="login" @submit.prevent="handleRegister">
+      <input required v-model="firstName" placeholder = "First Name">
+      <input required v-model="lastName" placeholder = "Last Name">
+      <input required v-model="username" placeholder = "Username">
+      <input type="email" required v-model="email" placeholder = "E-mail">
+      <input type="password" required v-model="password" placeholder = "Password">
+      <input type="password" required v-model="confPassword" placeholder = "Confirm your password">
+      <button type="register">Sign-up</button>
+    </form>
+  </hero>
   <Footer />
 </template>
 
 <style scoped>
-.navbar {
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
+.hero {
+  display:flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  justify-content: center;
 }
-
-.navbar h1 {
-  font-size: 2rem;
-  color: white;
-  margin: 0;
-}
-
-.navbar .button.login {
-  padding: 10px 20px;
-  border: 2px solid white;
-  background-color: transparent;
-  color: white;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.navbar .button.login:hover {
-  background-color: white;
-  color: red;
-}
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #fff;
-  color: #333;
-}
-
-.overlay {
-  width: 100%;
-  height: 100%;
+  background-color: #000;
+  color: #fff;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  color: white;
+  justify-content: center;
+  min-height: 100vh;
 }
 
-
-.form-container {
-  background-color: white;
+form.login {
+  
+  background-color: #fff;
   padding: 30px 20px;
   border-radius: 8px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  text-align: center;
   width: 90%;
   max-width: 400px;
+  text-align: center;
 }
 
-.form-container h2 {
-  margin-bottom: 20px;
-  color: red;
-}
-
-.input-field {
+form.login input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 2px solid red;
+  border: 2px solid #ff0000;
   border-radius: 4px;
   outline: none;
+  font-size: 1rem;
 }
 
-.input-field:focus {
+form.login input:focus {
   border-color: darkred;
   box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
 }
 
-.button.register {
+form.login button[type="register"] {
   width: 100%;
   padding: 10px;
-  background-color: red;
-  color: white;
+  background-color: #ff0000;
+  color: #fff;
   text-transform: uppercase;
   font-weight: bold;
   border: none;
@@ -117,7 +100,7 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.button.register:hover {
+form.login button[type="register"]:hover {
   background-color: darkred;
 }
 </style>
