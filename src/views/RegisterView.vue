@@ -42,7 +42,7 @@ const handleRegister = () => {
 
 <template>
   <Header />
-  <hero>
+  <div class = "hero">
     <form class="login" @submit.prevent="handleRegister">
       <input required v-model="firstName" placeholder = "First Name">
       <input required v-model="lastName" placeholder = "Last Name">
@@ -52,7 +52,7 @@ const handleRegister = () => {
       <input type="password" required v-model="confPassword" placeholder = "Confirm your password">
       <button type="register">Sign-up</button>
     </form>
-  </hero>
+  </div>
   <Footer />
 </template>
 
@@ -61,6 +61,7 @@ const handleRegister = () => {
   display:flex;
   align-items: center;
   justify-content: center;
+  padding: 80px;
 }
 body {
   margin: 0;
