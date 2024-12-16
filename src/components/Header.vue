@@ -24,11 +24,8 @@ const logout = () => {
         </li>
       </div>
       <li>
-        <RouterLink to="/movies">New Movies</RouterLink>
+        <RouterLink to="/movies">Movies</RouterLink>
       </li>
-      <li><a href="">TV Shows</a></li>
-      <li><a href="">Actors</a></li>
-
       <li v-if="!store.email">
         <RouterLink to="/register" class="entry">SIGN UP</RouterLink>
       </li>
