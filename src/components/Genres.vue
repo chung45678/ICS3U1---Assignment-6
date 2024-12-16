@@ -1,20 +1,32 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { useStore } from '../store';
 import { useRouter } from 'vue-router';
 
 const props = defineProps(["genres"]);
 const router = useRouter();
+const store = useStore();
 const selectedGenre = ref(12);
 const response = ref(null);
 
-async function getMovieByGenre() {
-  response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${selectedGenre.value}`);
+const addToCart = (movie) => {
+  store.cart.set(movie.id, {
+    title: movie.title,
+    url: movie.poster_path,
+    overview: movie.overview,
+    release_date: movie.release_date,
+    vote_average: movie.vote_average,
+  });
 };
+
+async function getMovieByGenre() {
+  response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&with_genres=${selectedGenre.value}`);
+}
 
 function getMovieDetails(id) {
   router.push(`/movies/${id}`);
-};
+}
 
 onMounted(async () => {
   response.value = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${selectedGenre.value}`);
@@ -23,7 +35,7 @@ onMounted(async () => {
 
 <template>
   <div class="genre-heading">
-    <h1> Featured Movies by Genre </h1>
+    <h1>Featured Movies by Genre</h1>
   </div>
 
   <div class="genre-selector">
@@ -41,10 +53,9 @@ onMounted(async () => {
       <div class="movie-description">
         <h3>{{ movie.title }}</h3>
         <p>Release Date: {{ movie.release_date }}</p>
-        <a :href="`https://www.youtube.com/results?search_query=${movie.title}+trailer`" target="_blank"
-          class="trailer">
-          Watch the Trailer
-        </a>
+        <button @click.stop="addToCart(movie)" class="buy-button">
+          {{ store.cart.has(movie.id) ? 'Added!' : 'Buy!' }}
+        </button>
       </div>
     </div>
   </div>
@@ -79,6 +90,7 @@ select {
   color: white;
   border-radius: 5px;
   outline: none;
+  font-size: 1rem;
 }
 
 select option {
@@ -123,28 +135,34 @@ select option {
 .movie-description h3 {
   margin: 10px 0;
   color: red;
+  font-size: 1.1rem;
 }
 
 .movie-description p {
   margin: 0;
   font-size: 0.9rem;
-  color:white;
+  color: white;
 }
 
-.trailer {
-  display: inline-block;
+.buy-button {
   margin-top: 10px;
-  padding: 5px 10px;
+  padding: 5px 15px;
   background-color: red;
   color: white;
-  text-decoration: none;
+  border: none;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s;
 }
 
-.trailer:hover {
+.buy-button:hover {
   background-color: darkred;
 }
+
+.buy-button:disabled {
+  background-color: #333;
+  color: #999;
+  cursor: not-allowed;
+}
 </style>
-
-

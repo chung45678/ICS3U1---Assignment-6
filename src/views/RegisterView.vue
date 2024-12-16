@@ -15,8 +15,20 @@ const store = useStore();
 const router = useRouter();
 
 const handleRegister = () => {
-  if (confPassword.value !== password.value) {
-    alert("Your passwords do not match!")
+  event.preventDefault();
+
+  if (!firstName.value) {
+    alert('First Name is required.');
+  } else if (!lastName.value) {
+    alert('Last Name is required.');
+  } else if (!email.value) {
+    alert('Email is required.');
+  } else if (!password.value) {
+    alert('Password is required.');
+  } else if (!confPassword.value) {
+    alert('Re-entering the password is required.');
+  } else if (password.value !== confPassword.value) {
+    alert('Passwords do not match.');
   } else {
     store.email = email.value
     store.password = password.value
